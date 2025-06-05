@@ -9,7 +9,7 @@ green_movement_text = ""
 green_movement_time = 0
 
 def detect_objects(frame, prev_red_cx, prev_green_cx,
-                   movement_threshold=5, display_duration=1.0):
+                   movement_threshold=3, display_duration=1.0):
     """
     Detect red and green objects in the frame and track their movements.
 
@@ -22,9 +22,9 @@ def detect_objects(frame, prev_red_cx, prev_green_cx,
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     # Red color range (in HSV)
-    lower_red1 = np.array([0, 150, 100])
-    upper_red1 = np.array([10, 255, 255])
-    lower_red2 = np.array([170, 150, 100])
+    lower_red1 = np.array([0, 120, 70])
+    upper_red1 = np.array([15, 255, 255])
+    lower_red2 = np.array([160, 120, 70])
     upper_red2 = np.array([180, 255, 255])
 
     # Green color range (in HSV)
