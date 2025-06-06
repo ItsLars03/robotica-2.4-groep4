@@ -1,9 +1,8 @@
-# app.py
+# File: run.py
 
-from controller.app_controller import AppController
+from remoteui import SimpleCameraApp
 
 if __name__ == "__main__":
-    # Maak de Controller
-    app = AppController(width=800, height=480)
-    # Start de applicatie (video_loop + mainloop)
-    app.start()
+    # Pas hier de grootte eventueel aan
+    app = SimpleCameraApp(width=800, height=480)
+    app.run()
