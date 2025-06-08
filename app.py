@@ -1,8 +1,6 @@
-# File: run.py
-
-from remoteui import SimpleCameraApp
+from ui.remote_ui import RemoteUI
 
 if __name__ == "__main__":
     # Pas hier de grootte eventueel aan
-    app = SimpleCameraApp(width=800, height=480)
+    app = RemoteUI(width=800, height=480)
     app.run()
