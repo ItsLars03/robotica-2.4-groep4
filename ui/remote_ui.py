@@ -7,6 +7,7 @@ from PIL import Image, ImageTk
 from camera.camera import CameraHandler
 from detection.color_detection import detect_colors
 from detection.strawberry_detection import detect_strawberries
+from motor.motor_controller import MotorController
 
 
 class RemoteUI:
@@ -84,6 +85,7 @@ class RemoteUI:
 
     def on_gripper_click(self):
         print("GRIPPER-knop ingedrukt!")
+        MotorController.toggle_gripper()
 
     def on_stop_click(self):
         print("STOP-knop ingedrukt!")

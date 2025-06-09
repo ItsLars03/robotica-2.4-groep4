@@ -10,8 +10,7 @@ class CameraHandler:
     def __init__(self, width, height, device_url=STREAM):
         self.width = width
         self.height = height
-        self.device_index = device_url
-        self.cap = cv2.VideoCapture(self.device_index)
+        self.cap = cv2.VideoCapture(device_url)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
         self.camera_on = False

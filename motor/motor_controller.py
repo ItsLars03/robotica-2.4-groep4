@@ -56,4 +56,12 @@ class MotorController:
             position = 1023 if speed > 0 else 0
             motor.move(position=position, speed=abs(speed))
 
+    def toggle_gripper(self):
+        gripper_motor = motor_registry.get("gripper_motor")
+        if gripper_motor:
+            if gripper_motor.read_position() == 0:
+                gripper_motor.move(position=1023, speed=512)
+            else:
+                gripper_motor.move(position=0, speed=512)
+
 MotorController = MotorController()

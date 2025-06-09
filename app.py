@@ -1,7 +1,6 @@
-from ui.remote_ui import RemoteUI
-# app.py
 
-from controller.app_controller import AppController
+# app.py
+from ui.remote_ui import RemoteUI
 from joystick.joystick_registry import JoystickRegistry
 from motor.motor_registry import registry as motor_registry
 
