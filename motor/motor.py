@@ -1,4 +1,4 @@
-from ax12 import Ax12
+from motor.ax12 import Ax12
 
 class Motor:
     def __init__(self, motor_id, controller: Ax12, name=""):
@@ -21,13 +21,8 @@ class Motor:
     def ping(self):
         return self.ctrl.ping(self.id)
 
+    def limit(self, min_pos=0, max_pos=1023):
+        self.ctrl.setAngleLimit(self.id, min_pos, max_pos)
+
     def __repr__(self):
         return f"<{self.name} (ID: {self.id})>"
-
-class RobotArm(Motor):
-    def go_forward(self):
-        self.move(1023, speed=300)
-
-    def go_backward(self):
-        self.move(0, speed=300)
-#ttt
