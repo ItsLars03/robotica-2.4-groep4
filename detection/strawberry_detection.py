@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 def detect_strawberries(frame, self):
-    frame = cv2.resize(frame, (self.width, self.height))  # optional: smaller window
+    # frame = cv2.resize(frame, (self.width, self.height))  # optional: smaller window
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     blurred = cv2.GaussianBlur(hsv, (17, 17), 0)

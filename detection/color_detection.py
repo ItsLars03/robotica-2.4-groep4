@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import time
+from PIL import ImageEnhance, Image
 
 # Movement tracking variables
 red_movement_text = ""
@@ -8,13 +9,26 @@ red_movement_time = 0
 green_movement_text = ""
 green_movement_time = 0
 
-def detect_colors(frame, self):
-    global red_movement_text, red_movement_time, green_movement_text, green_movement_time
-    prev_red_cx = None
-    prev_green_cx = None
-    movement_threshold = 1
-    display_duration = 1.0
+prev_red_cx = 0
+prev_green_cx = 0
+movement_threshold = 1
+display_duration = 1.0
 
+def detect_colors(frame, self):
+    global red_movement_text, red_movement_time, green_movement_text, green_movement_time, prev_red_cx, prev_green_cx, movement_threshold, display_duration
+
+
+    # Convert the OpenCV image (BGR) to PIL format (RGB) for enhancement
+    # frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    # pil_image = Image.fromarray(frame_rgb)
+    #
+    # # Enhance color saturation using PIL
+    # enhanced_color = ImageEnhance.Color(pil_image).enhance(2)
+    #
+    # # Convert the enhanced PIL image back to OpenCV format (BGR)
+    # enhanced_color_cv = np.array(enhanced_color)
+    # enhanced_color_cv = cv2.cvtColor(enhanced_color_cv, cv2.COLOR_RGB2BGR)
+    # enhanced_resized = cv2.resize(enhanced_color_cv, (width, height))
     # Resize for consistency
     frame = cv2.resize(frame, (self.width, self.height))
 
@@ -75,7 +89,9 @@ def detect_colors(frame, self):
 
     if valid_red_contours:
         for contour in valid_red_contours:
-            cv2.drawContours(frame, [contour], 0, (0, 255, 255), 2)
+            M = cv2.moments(contour)
+            #if M["m00"] != 0:
+                #cv2.drawContours(frame, [contour], 0, (0, 255, 255), 2)
 
         largest_contour = max(valid_red_contours, key=cv2.contourArea)
         M = cv2.moments(largest_contour)
@@ -84,6 +100,7 @@ def detect_colors(frame, self):
             cy = int(M["m01"] / M["m00"])
             cv2.putText(frame, 'Red', (cx - 15, cy - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 255), 1)
+            cv2.drawContours(frame, [largest_contour], 0, (0, 255, 255), 2)
 
             current_time = time.time()
             if prev_red_cx is not None:
@@ -105,7 +122,9 @@ def detect_colors(frame, self):
 
     if valid_green_contours:
         for contour in valid_green_contours:
-            cv2.drawContours(frame, [contour], 0, (0, 255, 0), 2)
+            M = cv2.moments(contour)
+            #if M["m00"] != 0:
+                #cv2.drawContours(frame, [contour], 0, (0, 255, 0), 2)
 
         largest_contour = max(valid_green_contours, key=cv2.contourArea)
         M = cv2.moments(largest_contour)
@@ -114,6 +133,7 @@ def detect_colors(frame, self):
             cy = int(M["m01"] / M["m00"])
             cv2.putText(frame, 'Green', (cx - 20, cy - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), 1)
+            cv2.drawContours(frame, [largest_contour], 0, (0, 255, 0), 2)
 
             current_time = time.time()
             if prev_green_cx is not None:

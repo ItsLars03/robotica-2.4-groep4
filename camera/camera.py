@@ -21,6 +21,7 @@ class CameraHandler:
         try:
             requests.get(URL + "/xclk?xclk=24", timeout=2)
             requests.get(URL + "/control?var=framesize&val=12", timeout=2)
+            requests.get(URL + "/control?var=quality&val=4", timeout=2)
             print("Camera configured")
         except Exception as e:
             print("Camera configuration failed:", e)
