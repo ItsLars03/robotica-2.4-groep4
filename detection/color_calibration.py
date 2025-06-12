@@ -9,7 +9,7 @@ def nothing(x):
 
 def main():
     # Open de standaard camera (0). Pas het getal aan als je een andere camera wilt gebruiken.
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("http://192.168.4.1:81/stream")
     if not cap.isOpened():
         print("Error: kon de camera niet openen")
         return
