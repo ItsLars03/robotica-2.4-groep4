@@ -1,0 +1,30 @@
+from joystick.joystick_manager import JoystickManager
+from ui.remote_ui import RemoteUI
+from camera.camera_handler import CameraHandler
+from detection.color_detection import detect_colors
+from detection.strawberry_detection import detect_strawberries
+from motor.motor_manager import toggle_gripper
+
+if __name__ == "__main__":
+    # Initialize the camera
+    camera = CameraHandler(width=800, height=480)
+
+    # Create detectors dict
+    detectors = {
+        "color": detect_colors,
+        "strawberry": detect_strawberries
+    }
+
+    # Inject dependencies into UI (change width/height based on screen size)
+    app = RemoteUI(
+        width=800,
+        height=480,
+        camera_handler=camera,
+        gripper_controller=toggle_gripper,
+        detectors=detectors
+    )
+
+    # Start the joystick manager so it starts listening for joystick input
+    # Also starts the motor manager after initializing the joysticks to avoid problems
+    joystickManager = JoystickManager()
+    joystickManager.start()
