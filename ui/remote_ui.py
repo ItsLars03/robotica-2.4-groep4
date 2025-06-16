@@ -1,42 +1,33 @@
-# File: remote_py
-
 import tkinter as tk
-
 import cv2
 from PIL import Image, ImageTk
-from camera.camera import CameraHandler
-from detection.color_detection import detect_colors
-from detection.strawberry_detection import detect_strawberries
-# from motor.motor_controller import MotorController
-
 
 class RemoteUI:
-    def __init__(self, width, height):
+    def __init__(self, width, height, camera_handler, gripper_controller, detectors=None):
         self.width = width
         self.height = height
+        self.camera = camera_handler
+        self.gripper_controller = gripper_controller
+        self.detectors = detectors or {}
 
-        self.camera = CameraHandler(width=self.width, height=self.height)
         self.detecting_mode = None
 
-        # === Theme ===
-        self.bg_color = "#0f1c3f"      # Retro dark blue
-        self.btn_color = "#1e3f66"     # Button background
-        self.btn_active = "#3399ff"    # Active button
-        self.btn_fg = "#ffffff"        # Button text
+        self.bg_color = "#0f1c3f"
+        self.btn_color = "#1e3f66"
+        self.btn_active = "#3399ff"
+        self.btn_fg = "#ffffff"
         self.btn_font = ("Helvetica", 12, "bold")
 
-        # === Main window ===
         self.root = tk.Tk()
         self.root.title("Remote UI")
         self.root.geometry(f"{width}x{height}")
         self.root.configure(bg=self.bg_color)
         self.root.resizable(False, False)
 
-        # === Video label ===
         self.lbl_video = tk.Label(self.root, bg=self.bg_color)
         self.lbl_video.place(x=0, y=0, relwidth=1, relheight=1)
 
-        # === Buttons ===
+        # Buttons
         self.btn_cam = self._styled_button("CAM", self.toggle_camera)
         self.btn_cam.place(relx=0.945, rely=0.06, anchor="center")
 
@@ -74,23 +65,18 @@ class RemoteUI:
         )
 
     def toggle_camera(self):
-        is_on = self.camera.toggle()
-        if is_on:
-            self.btn_cam.config(bg=self.btn_active, fg="#ffffff")
-        else:
-            self.btn_cam.config(bg="#000000", fg="#ff4444")
+        is_on = self.camera.toggle_camera()
+        self.btn_cam.config(bg=self.btn_active if is_on else "#000000", fg="#ffffff" if is_on else "#ff4444")
 
     def on_mode_click(self):
-        print("MODE-knop ingedrukt!")
+        print("MODE button clicked.")
 
     def on_gripper_click(self):
-        print("GRIPPER-knop ingedrukt!")
-        #MotorController.toggle_gripper()
+        self.gripper_controller()
 
     def on_stop_click(self):
-        print("STOP-knop ingedrukt!")
-        if self.camera.camera_on:
-            self.camera.toggle()
+        print("STOP button clicked.")
+        self.camera.toggle_camera()
         self.btn_cam.config(bg="#000000", fg="#ff4444")
 
     def color_detect_click(self):
@@ -102,15 +88,8 @@ class RemoteUI:
         self.update_detection_buttons()
 
     def update_detection_buttons(self):
-        if self.detecting_mode == "color":
-            self.btn_cdetec.config(bg="#00cc66")
-            self.btn_sdetec.config(bg=self.btn_color)
-        elif self.detecting_mode == "strawberry":
-            self.btn_cdetec.config(bg=self.btn_color)
-            self.btn_sdetec.config(bg="#00cc66")
-        else:
-            self.btn_cdetec.config(bg=self.btn_color)
-            self.btn_sdetec.config(bg=self.btn_color)
+        self.btn_cdetec.config(bg="#00cc66" if self.detecting_mode == "color" else self.btn_color)
+        self.btn_sdetec.config(bg="#00cc66" if self.detecting_mode == "strawberry" else self.btn_color)
 
     def on_close(self):
         self.camera.release()
@@ -119,10 +98,8 @@ class RemoteUI:
     def video_loop(self):
         ret, frame = self.camera.read_frame()
         if ret:
-            if self.detecting_mode == "color":
-                frame = detect_colors(frame, self)
-            elif self.detecting_mode == "strawberry":
-                frame = detect_strawberries(frame, self)
+            if self.detecting_mode and self.detecting_mode in self.detectors:
+                frame = self.detectors[self.detecting_mode](frame, self)
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             pil_img = Image.fromarray(frame_rgb)
         else:
