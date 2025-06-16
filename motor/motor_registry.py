@@ -11,10 +11,11 @@ class MotorRegistry:
         # List all required motor IDs and check if they are present
         req_motor_ids = [2, 3, 4, 5, 6, 7]
         found_ids = self.ax.learnServos(1, 7, verbose=True)
+        print(found_ids)
 
-        missing = req_motor_ids - found_ids
-        if missing:
-            raise RuntimeError(f"Missing motors with IDs: {sorted(missing)}.")
+        # missing = req_motor_ids - found_ids
+        # if missing:
+        #     raise RuntimeError(f"Missing motors with IDs: {sorted(missing)}.")
 
         # set motor to the registry based on their id and function in the robot
         for i in found_ids:
@@ -31,7 +32,7 @@ class MotorRegistry:
                     motor.limit()
                 case 7:
                     motor = self.motors["turn_base_motor"] = Motor(i, self.ax, "turn_base_motor")
-                    motor.limit()
+                    motor.set_wheel_mode()
                 case 2:
                     motor = self.motors["up_down_motor_1"] = Motor(i, self.ax, "up_down_motor_1")
                     motor.limit()

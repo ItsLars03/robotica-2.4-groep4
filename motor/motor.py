@@ -24,5 +24,8 @@ class Motor:
     def limit(self, min_pos=0, max_pos=1023):
         self.ctrl.setAngleLimit(self.id, min_pos, max_pos)
 
+    def set_wheel_mode(self):
+        self.ctrl.setAngleLimit(self.id, 0, 0)
+
     def __repr__(self):
         return f"<{self.name} (ID: {self.id})>"

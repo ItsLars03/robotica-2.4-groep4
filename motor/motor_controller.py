@@ -52,9 +52,12 @@ class MotorController:
         speed = map_func(axis_value)
         if speed == 0:
             motor.stop()
+            return
+
+        if speed > 0:
+            motor.move(motor.id, speed)
         else:
-            position = 1023 if speed > 0 else 0
-            motor.move(position=position, speed=abs(speed))
+            motor.move(motor.id, abs(speed) + 1024)
 
     def toggle_gripper(self):
         gripper_motor = motor_registry.get("gripper_motor")
