@@ -28,20 +28,28 @@ def detect_objects(frame, prev_red_cx, prev_green_cx,
     upper_red2 = np.array([180, 255, 255])
 
     # Green color range (in HSV)
-    lower_green = np.array([35, 100, 50])
-    upper_green = np.array([85, 255, 255])
+    lower_green1 = np.array([35, 100, 50])
+    upper_green1 = np.array([85, 255, 255])
 
-    # Create color masks
+    #Extra green color range
+    lower_green2 = np.array([60,100,95])
+    upper_green2 = np.array([70,145,135])
+
+    # Red color mask
     red1 = cv2.inRange(hsv, lower_red1, upper_red1)
     red2 = cv2.inRange(hsv, lower_red2, upper_red2)
     red_mask = red1 | red2
-    green_mask = cv2.inRange(hsv, lower_green, upper_green)
+
+    # Green color mask
+    green1 = cv2.inRange(hsv, lower_green1, upper_green1)
+    green2 = cv2.inRange(hsv, lower_green2, upper_green2)
+    green_mask = green1 | green2
 
     # Process red objects - individual contours
     red_contours, _ = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # Filter contours by minimum area to remove noise
-    min_area = 100  # Adjust based on your object size
+    min_area = 1  # Adjust based on your object size
     valid_red_contours = [cnt for cnt in red_contours if cv2.contourArea(cnt) > min_area]
 
     # Track center of the largest red object
