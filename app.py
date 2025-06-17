@@ -5,7 +5,7 @@ from detection.color_detection import ColorDetector
 from detection.strawberry_detection import StrawberryDetector
 
 if __name__ == "__main__":
-    # Initialize the camera
+    # Initialize the camera handler with the desired resolution
     camera = CameraHandler(width=800, height=480)
 
     # Create detectors dict
