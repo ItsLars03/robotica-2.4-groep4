@@ -16,8 +16,7 @@ class JoystickManager:
     def start(self):
         if not self.running:
             self.running = True
-            self.thread = threading.Thread(target=self._poll_loop, daemon=True)
-            self.thread.start()
+            self._poll_loop()
 
     def stop(self):
         self.running = False

@@ -2,17 +2,20 @@ import tkinter as tk
 import cv2
 from PIL import Image, ImageTk
 
+from motor.motor_manager import MotorManager
+
+
 class RemoteUI:
     """
     Een afstandsbediening-UI voor het weergeven van camerabeelden
     en het activeren van acties zoals gripper-besturing en detectie.
     """
-    def __init__(self, width, height, camera_handler, gripper_controller, detectors=None):
+    def __init__(self, width, height, camera_handler, gripper_controller= "", detectors=None):
         # Sla afmetingen en handlers op
         self.width = width
         self.height = height
         self.camera = camera_handler
-        self.gripper_controller = gripper_controller
+        self.gripper_controller = MotorManager.toggle_gripper()
         # Optionele dict met detectiefuncties per modus
         self.detectors = detectors or {}
 
