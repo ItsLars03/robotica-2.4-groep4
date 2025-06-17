@@ -1,7 +1,7 @@
 from joystick.joystick_manager import JoystickManager
 from ui.remote_ui import RemoteUI
 from camera.camera_handler import CameraHandler
-from detection.color_detection import detect_colors
+from detection.color_detection import ColorDetector, detect_colors
 from detection.strawberry_detection import detect_strawberries
 
 if __name__ == "__main__":
