@@ -3,7 +3,6 @@ from ui.remote_ui import RemoteUI
 from camera.camera_handler import CameraHandler
 from detection.color_detection import detect_colors
 from detection.strawberry_detection import detect_strawberries
-from motor.motor_manager import toggle_gripper
 
 if __name__ == "__main__":
     # Initialize the camera
@@ -20,7 +19,7 @@ if __name__ == "__main__":
         width=800,
         height=480,
         camera_handler=camera,
-        gripper_controller=toggle_gripper,
+        gripper_controller="",
         detectors=detectors
     )
 

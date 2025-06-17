@@ -1,10 +1,12 @@
 import serial
 import threading
 import time
-from joystick.registry import registry
+from joystick.joystick_registry import registry
 from motor.motor_manager import MotorManager
 
+# JoystickManager class for managing joystick input and sending input to motors
 class JoystickManager:
+    #
     def __init__(self, port='/dev/ttyAMA2', baudrate=115200):
         self.motorManager = MotorManager()
         self.serial = serial.Serial(port, baudrate, timeout=1)
@@ -14,8 +16,7 @@ class JoystickManager:
     def start(self):
         if not self.running:
             self.running = True
-            self.thread = threading.Thread(target=self._poll_loop, daemon=True)
-            self.thread.start()
+            self._poll_loop()
 
     def stop(self):
         self.running = False

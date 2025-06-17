@@ -1,5 +1,6 @@
 from .joystick import Joystick
 
+# JoystickRegistry class for managing the joysticks
 class JoystickRegistry:
     def __init__(self):
         self.joysticks = {
@@ -7,9 +8,12 @@ class JoystickRegistry:
             "J2": Joystick("J2")
         }
 
+    # Update joysticks from serial input
     def update_from_serial(self, line: str):
+        # Parsing string format to extract joystick data to usable format (e.g., "J1:100,200,1,J2:150,250,0")
         parts = line.strip().split(",")
         i = 0
+        # Iterate through parts
         while i < len(parts):
             if parts[i].startswith("J"):
                 try:
@@ -26,6 +30,7 @@ class JoystickRegistry:
             else:
                 i += 1  # skip non-joystick data
 
+    # Get a joystick by name
     def get(self, name):
         return self.joysticks.get(name)
 
