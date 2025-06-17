@@ -1,8 +1,8 @@
 from joystick.joystick_manager import JoystickManager
 from ui.remote_ui import RemoteUI
 from camera.camera_handler import CameraHandler
-from detection.color_detection import ColorDetector, detect_colors
-from detection.strawberry_detection import detect_strawberries
+from detection.color_detection import ColorDetector
+from detection.strawberry_detection import StrawberryDetector
 
 if __name__ == "__main__":
     # Initialize the camera
@@ -10,8 +10,8 @@ if __name__ == "__main__":
 
     # Create detectors dict
     detectors = {
-        "color": detect_colors,
-        "strawberry": detect_strawberries
+        "color": ColorDetector.detect_colors,
+        "strawberry": StrawberryDetector.detect_strawberries
     }
 
     # Inject dependencies into UI (change width/height based on screen size)
